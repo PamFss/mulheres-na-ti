@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação do Guia — Mulheres na TI</title>
+<style>
+  :root {
+    --roxo: #6C3FC5;
+    --roxo-escuro: #4A2990;
+    --roxo-claro: #EDE7FF;
+    --azul: #4B9FE1;
+    --branco: #FFFFFF;
+    --cinza: #F5F3FF;
+    --texto: #2D1B69;
+    --texto-sec: #5C5C7A;
+    --erro: #E24B4A;
+    --sucesso: #22C55E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--cinza); color: var(--texto); line-height: 1.7; }
+
+  nav {
+    background: var(--roxo-escuro);
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  nav .logo { color: var(--branco); font-weight: 700; font-size: 16px; }
+  nav .logo span { color: #C4AAFF; }
+  nav a { color: #D6C8FF; font-size: 13px; text-decoration: none; }
+  nav a:hover { color: var(--branco); }
+
+  .hero {
+    background: linear-gradient(135deg, var(--roxo-escuro), var(--roxo));
+    color: var(--branco);
+    padding: 48px 32px 56px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(75,159,225,0.18) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+  }
+  .hero h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; position: relative; }
+  .hero h1 span { color: #C4AAFF; }
+  .hero p { font-size: 14px; opacity: .88; max-width: 500px; margin: 0 auto; position: relative; }
+
+  .container { max-width: 680px; margin: -28px auto 48px; padding: 0 16px; }
+
+  /* PROGRESSO */
+  .progress-bar {
+    background: var(--branco);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(108,63,197,0.08);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .progress-track { flex: 1; height: 6px; background: #E0D9FF; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--roxo); border-radius: 3px; transition: width .4s ease; }
+  .progress-text { font-size: 12px; color: var(--texto-sec); white-space: nowrap; }
+
+  /* SEÇÕES */
+  .secao {
+    background: var(--branco);
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(108,63,197,0.08);
+    display: none;
+  }
+  .secao.ativa { display: block; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .secao-header { margin-bottom: 24px; }
+  .secao-badge {
+    display: inline-block;
+    background: var(--roxo-claro); color: var(--roxo);
+    font-size: 11px; font-weight: 700; padding: 4px 12px;
+    border-radius: 20px; margin-bottom: 10px;
+  }
+  .secao h2 { font-size: 18px; font-weight: 800; color: var(--roxo-escuro); margin-bottom: 4px; }
+  .secao p { font-size: 13px; color: var(--texto-sec); }
+
+  /* CAMPOS */
+  .campo { margin-bottom: 20px; }
+  .campo label {
+    display: block; font-size: 13px; font-weight: 600;
+    color: var(--texto); margin-bottom: 8px;
+  }
+  .campo label .req { color: var(--roxo); margin-left: 2px; }
+  .campo input[type="text"],
+  .campo select,
+  .campo textarea {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid #E0D9FF; border-radius: 8px;
+    font-size: 14px; font-family: inherit;
+    color: var(--texto); background: var(--branco);
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+  }
+  .campo input:focus,
+  .campo select:focus,
+  .campo textarea:focus {
+    border-color: var(--roxo);
+    box-shadow: 0 0 0 3px rgba(108,63,197,0.1);
+  }
+  .campo textarea { resize: vertical; min-height: 88px; }
+  .campo .erro-msg { font-size: 12px; color: var(--erro); margin-top: 4px; display: none; }
+  .campo.invalido input,
+  .campo.invalido select,
+  .campo.invalido textarea { border-color: var(--erro); }
+  .campo.invalido .erro-msg { display: block; }
+
+  /* RADIO / CHECKBOX */
+  .opcoes { display: flex; flex-direction: column; gap: 8px; }
+  .opcao {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: 8px;
+    border: 1.5px solid #E0D9FF; cursor: pointer;
+    transition: border-color .2s, background .2s;
+    font-size: 13px;
+  }
+  .opcao:hover { border-color: var(--roxo); background: var(--roxo-claro); }
+  .opcao input { accent-color: var(--roxo); width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+  .opcao.selecionada { border-color: var(--roxo); background: var(--roxo-claro); }
+
+  /* ESCALA */
+  .escala { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .escala-num {
+    width: 44px; height: 44px; border-radius: 8px;
+    border: 1.5px solid #E0D9FF; cursor: pointer;
+    font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s; color: var(--texto-sec);
+    background: var(--branco);
+  }
+  .escala-num:hover { border-color: var(--roxo); color: var(--roxo); background: var(--roxo-claro); }
+  .escala-num.sel { background: var(--roxo); border-color: var(--roxo); color: var(--branco); }
+  .escala-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--texto-sec); margin-top: 4px; }
+
+  /* NAVEGAÇÃO */
+  .nav-btns { display: flex; gap: 12px; margin-top: 28px; }
+  .btn-voltar {
+    padding: 11px 24px; border-radius: 30px;
+    border: 2px solid #E0D9FF; background: var(--branco);
+    color: var(--texto-sec); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-voltar:hover { border-color: var(--roxo); color: var(--roxo); }
+  .btn-avancar {
+    flex: 1; padding: 11px 24px; border-radius: 30px;
+    background: var(--roxo); border: none;
+    color: var(--branco); font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-avancar:hover { background: var(--roxo-escuro); transform: translateY(-1px); }
+
+  /* TELA DE CONFIRMAÇÃO */
+  #tela-fim {
+    background: var(--branco);
+    border-radius: 16px;
+    padding: 48px 28px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(108,63,197,0.08);
+    display: none;
+  }
+  .fim-icone {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--roxo), var(--azul));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 20px;
+  }
+  #tela-fim h2 { font-size: 22px; font-weight: 800; color: var(--roxo-escuro); margin-bottom: 8px; }
+  #tela-fim p { font-size: 14px; color: var(--texto-sec); max-width: 420px; margin: 0 auto 24px; }
+
+  .resumo {
+    background: var(--cinza);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    margin: 20px 0;
+  }
+  .resumo h3 { font-size: 13px; font-weight: 700; color: var(--roxo); margin-bottom: 12px; }
+  .resumo-item { margin-bottom: 10px; }
+  .resumo-item .pergunta { font-size: 11px; color: var(--texto-sec); margin-bottom: 2px; }
+  .resumo-item .resposta { font-size: 13px; color: var(--texto); font-weight: 600; }
+
+  .btn-novo {
+    background: var(--roxo); color: var(--branco);
+    padding: 12px 28px; border-radius: 30px;
+    border: none; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-novo:hover { background: var(--roxo-escuro); }
+
+  footer {
+    background: var(--roxo-escuro);
+    color: #D6C8FF;
+    text-align: center;
+    padding: 20px 32px;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Mulheres na <span>TI</span> 💜</div>
+  <a href="guia_site_html.html">← Voltar ao guia</a>
+</nav>
+
+<div class="hero">
+  <h1>Avalie o <span>Guia Digital</span></h1>
+  <p>Sua opinião é muito importante! Responda as perguntas abaixo após a leitura do guia. São apenas 4 etapas rápidas. 💜</p>
+</div>
+
+<div class="container">
+
+  <!-- BARRA DE PROGRESSO -->
+  <div class="progress-bar">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:25%"></div>
+    </div>
+    <div class="progress-text" id="progressText">Etapa 1 de 4</div>
+  </div>
+
+  <!-- SEÇÃO 1: PERFIL -->
+  <div class="secao ativa" id="sec1">
+    <div class="secao-header">
+      <div class="secao-badge">Etapa 1 de 4</div>
+      <h2>Seu perfil</h2>
+      <p>Queremos entender um pouco sobre você antes de começar.</p>
+    </div>
+
+    <div class="campo" id="c-nome">
+      <label>Seu nome <span style="font-size:11px;color:var(--texto-sec)">(opcional)</span></label>
+      <input type="text" id="nome" placeholder="Como podemos te chamar?">
+    </div>
+
+    <div class="campo" id="c-faixa">
+      <label>Faixa etária <span class="req">*</span></label>
+      <div class="opcoes" id="faixa">
+        <label class="opcao"><input type="radio" name="faixa" value="Menos de 18 anos"> Menos de 18 anos</label>
+        <label class="opcao"><input type="radio" name="faixa" value="De 18 a 24 anos"> De 18 a 24 anos</label>
+        <label class="opcao"><input type="radio" name="faixa" value="De 25 a 34 anos"> De 25 a 34 anos</label>
+        <label class="opcao"><input type="radio" name="faixa" value="De 35 a 44 anos"> De 35 a 44 anos</label>
+        <label class="opcao"><input type="radio" name="faixa" value="45 anos ou mais"> 45 anos ou mais</label>
+      </div>
+      <div class="erro-msg">Por favor, selecione uma opção.</div>
+    </div>
+
+    <div class="campo" id="c-contato">
+      <label>Você já teve contato com a área de TI? <span class="req">*</span></label>
+      <div class="opcoes" id="contato">
+        <label class="opcao"><input type="radio" name="contato" value="Sim, trabalho na área"> Sim, trabalho na área</label>
+        <label class="opcao"><input type="radio" name="contato" value="Sim, já estudei algo relacionado"> Sim, já estudei algo relacionado</label>
+        <label class="opcao"><input type="radio" name="contato" value="Não, nunca tive contato"> Não, nunca tive contato</label>
+        <label class="opcao"><input type="radio" name="contato" value="Tenho interesse mas nunca comecei"> Tenho interesse mas nunca comecei</label>
+      </div>
+      <div class="erro-msg">Por favor, selecione uma opção.</div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-avancar" onclick="avancar(1)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 2: AVALIAÇÃO -->
+  <div class="secao" id="sec2">
+    <div class="secao-header">
+      <div class="secao-badge">Etapa 2 de 4</div>
+      <h2>Avaliação do conteúdo</h2>
+      <p>Como você avalia o material apresentado no guia?</p>
+    </div>
+
+    <div class="campo" id="c-nota">
+      <label>Nota geral para o guia <span class="req">*</span></label>
+      <div class="escala" id="escala-nota">
+        <div class="escala-num" onclick="selecionarEscala('nota',1,this)">1</div>
+        <div class="escala-num" onclick="selecionarEscala('nota',2,this)">2</div>
+        <div class="escala-num" onclick="selecionarEscala('nota',3,this)">3</div>
+        <div class="escala-num" onclick="selecionarEscala('nota',4,this)">4</div>
+        <div class="escala-num" onclick="selecionarEscala('nota',5,this)">5</div>
+      </div>
+      <div class="escala-labels"><span>Muito ruim</span><span>Excelente</span></div>
+      <div class="erro-msg">Por favor, selecione uma nota.</div>
+    </div>
+
+    <div class="campo" id="c-clareza">
+      <label>As informações foram claras e fáceis de entender? <span class="req">*</span></label>
+      <div class="opcoes" id="clareza">
+        <label class="opcao"><input type="radio" name="clareza" value="Sim, entendi tudo"> Sim, entendi tudo sem dificuldade</label>
+        <label class="opcao"><input type="radio" name="clareza" value="Sim, mas poderia ser mais simples"> Sim, mas algumas partes poderiam ser mais simples</label>
+        <label class="opcao"><input type="radio" name="clareza" value="Tive dificuldade em algumas partes"> Mais ou menos, tive dificuldade em algumas partes</label>
+        <label class="opcao"><input type="radio" name="clareza" value="Achei difícil de entender"> Não, achei o conteúdo difícil de entender</label>
+      </div>
+      <div class="erro-msg">Por favor, selecione uma opção.</div>
+    </div>
+
+    <div class="campo" id="c-secoes">
+      <label>Quais seções você achou mais úteis? <span style="font-size:11px;color:var(--texto-sec)">(pode marcar mais de uma)</span></label>
+      <div class="opcoes" id="secoes">
+        <label class="opcao"><input type="checkbox" name="secoes" value="Carreiras em TI"> Carreiras em TI</label>
+        <label class="opcao"><input type="checkbox" name="secoes" value="Por onde começar"> Por onde começar</label>
+        <label class="opcao"><input type="checkbox" name="secoes" value="Cursos gratuitos"> Cursos gratuitos</label>
+        <label class="opcao"><input type="checkbox" name="secoes" value="Comunidades de mulheres"> Comunidades de mulheres</label>
+        <label class="opcao"><input type="checkbox" name="secoes" value="Mitos e verdades"> Mitos e verdades</label>
+        <label class="opcao"><input type="checkbox" name="secoes" value="Todas foram úteis"> Todas foram úteis</label>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-voltar" onclick="voltar(2)">← Voltar</button>
+      <button class="btn-avancar" onclick="avancar(2)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 3: IMPACTO -->
+  <div class="secao" id="sec3">
+    <div class="secao-header">
+      <div class="secao-badge">Etapa 3 de 4</div>
+      <h2>Impacto do material</h2>
+      <p>Queremos saber se o guia fez diferença para você.</p>
+    </div>
+
+    <div class="campo" id="c-motivacao">
+      <label>Após ler o guia, você se sente mais motivada a buscar carreiras em TI? <span class="req">*</span></label>
+      <div class="opcoes" id="motivacao">
+        <label class="opcao"><input type="radio" name="motivacao" value="Sim, com certeza"> Sim, com certeza!</label>
+        <label class="opcao"><input type="radio" name="motivacao" value="Sim, um pouco mais"> Sim, um pouco mais</label>
+        <label class="opcao"><input type="radio" name="motivacao" value="Não mudou minha visão"> Não mudou minha visão</label>
+        <label class="opcao"><input type="radio" name="motivacao" value="Não me interesso pelo tema"> Não me interesso pelo tema</label>
+      </div>
+      <div class="erro-msg">Por favor, selecione uma opção.</div>
+    </div>
+
+    <div class="campo" id="c-indicaria">
+      <label>Você indicaria este guia para outras mulheres? <span class="req">*</span></label>
+      <div class="opcoes" id="indicaria">
+        <label class="opcao"><input type="radio" name="indicaria" value="Sim, com certeza"> Sim, com certeza!</label>
+        <label class="opcao"><input type="radio" name="indicaria" value="Provavelmente sim"> Provavelmente sim</label>
+        <label class="opcao"><input type="radio" name="indicaria" value="Talvez"> Talvez</label>
+        <label class="opcao"><input type="radio" name="indicaria" value="Não indicaria"> Não indicaria</label>
+      </div>
+      <div class="erro-msg">Por favor, selecione uma opção.</div>
+    </div>
+
+    <div class="campo">
+      <label>Qual foi a informação mais importante ou surpreendente para você?</label>
+      <textarea id="destaque" placeholder="Escreva aqui..."></textarea>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-voltar" onclick="voltar(3)">← Voltar</button>
+      <button class="btn-avancar" onclick="avancar(3)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4: SUGESTÕES -->
+  <div class="secao" id="sec4">
+    <div class="secao-header">
+      <div class="secao-badge">Etapa 4 de 4</div>
+      <h2>Sugestões de melhoria</h2>
+      <p>Sua opinião ajuda a tornar o guia ainda melhor para outras mulheres.</p>
+    </div>
+
+    <div class="campo">
+      <label>Você sentiu falta de algum conteúdo no guia?</label>
+      <textarea id="falta" placeholder="Escreva aqui..."></textarea>
+    </div>
+
+    <div class="campo">
+      <label>Deixe aqui qualquer outro comentário, sugestão ou elogio:</label>
+      <textarea id="comentario" placeholder="Escreva aqui..."></textarea>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-voltar" onclick="voltar(4)">← Voltar</button>
+      <button class="btn-avancar" onclick="enviar()">Enviar avaliação 💜</button>
+    </div>
+  </div>
+
+  <!-- TELA FINAL -->
+  <div id="tela-fim">
+    <div class="fim-icone">💜</div>
+    <h2>Obrigada pela sua participação!</h2>
+    <p>Suas respostas foram registradas e vão contribuir para tornar este material ainda melhor para outras mulheres que desejam entrar na área de TI.</p>
+
+    <div class="resumo">
+      <h3>📋 Resumo das suas respostas</h3>
+      <div id="resumo-conteudo"></div>
+    </div>
+
+    <a href="guia_site_html.html"><button class="btn-novo">← Voltar ao guia</button></a>
+  </div>
+
+</div>
+
+<footer>
+  <p><strong>Mulheres na TI: O Guia Inicial</strong> — Formulário de Avaliação</p>
+  <p>Pâmela Ferreira da Silva Souza — RU: 5245157 — UNINTER 2025</p>
+  <p style="opacity:.6;margin-top:4px;">Desenvolvido com HTML5, CSS3 e JavaScript</p>
+</footer>
+
+<script>
+  var respostas = {};
+  var secaoAtual = 1;
+  var totalSecoes = 4;
+
+  // Highlight opcao selecionada
+  document.querySelectorAll('.opcao input').forEach(function(inp) {
+    inp.addEventListener('change', function() {
+      var nome = this.name;
+      if (this.type === 'radio') {
+        document.querySelectorAll('input[name="' + nome + '"]').forEach(function(r) {
+          r.closest('.opcao').classList.remove('selecionada');
+        });
+      }
+      this.closest('.opcao').classList.toggle('selecionada', this.checked);
+    });
+  });
+
+  function selecionarEscala(campo, val, el) {
+    document.querySelectorAll('#escala-' + campo + ' .escala-num').forEach(function(n) {
+      n.classList.remove('sel');
+    });
+    el.classList.add('sel');
+    respostas['nota'] = val;
+    document.getElementById('c-nota').classList.remove('invalido');
+  }
+
+  function atualizarProgresso(sec) {
+    var pct = (sec / totalSecoes) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = 'Etapa ' + sec + ' de ' + totalSecoes;
+  }
+
+  function validarSecao(sec) {
+    var ok = true;
+    if (sec === 1) {
+      var faixa = document.querySelector('input[name="faixa"]:checked');
+      var contato = document.querySelector('input[name="contato"]:checked');
+      var cFaixa = document.getElementById('c-faixa');
+      var cContato = document.getElementById('c-contato');
+      cFaixa.classList.toggle('invalido', !faixa);
+      cContato.classList.toggle('invalido', !contato);
+      if (!faixa || !contato) ok = false;
+    }
+    if (sec === 2) {
+      var cNota = document.getElementById('c-nota');
+      var cClareza = document.getElementById('c-clareza');
+      var clareza = document.querySelector('input[name="clareza"]:checked');
+      cNota.classList.toggle('invalido', !respostas['nota']);
+      cClareza.classList.toggle('invalido', !clareza);
+      if (!respostas['nota'] || !clareza) ok = false;
+    }
+    if (sec === 3) {
+      var mot = document.querySelector('input[name="motivacao"]:checked');
+      var ind = document.querySelector('input[name="indicaria"]:checked');
+      document.getElementById('c-motivacao').classList.toggle('invalido', !mot);
+      document.getElementById('c-indicaria').classList.toggle('invalido', !ind);
+      if (!mot || !ind) ok = false;
+    }
+    return ok;
+  }
+
+  function avancar(sec) {
+    if (!validarSecao(sec)) return;
+    coletarRespostas(sec);
+    document.getElementById('sec' + sec).classList.remove('ativa');
+    secaoAtual = sec + 1;
+    document.getElementById('sec' + secaoAtual).classList.add('ativa');
+    atualizarProgresso(secaoAtual);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function voltar(sec) {
+    document.getElementById('sec' + sec).classList.remove('ativa');
+    secaoAtual = sec - 1;
+    document.getElementById('sec' + secaoAtual).classList.add('ativa');
+    atualizarProgresso(secaoAtual);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function coletarRespostas(sec) {
+    if (sec === 1) {
+      respostas['nome'] = document.getElementById('nome').value || 'Não informado';
+      respostas['faixa'] = document.querySelector('input[name="faixa"]:checked')?.value;
+      respostas['contato'] = document.querySelector('input[name="contato"]:checked')?.value;
+    }
+    if (sec === 2) {
+      respostas['clareza'] = document.querySelector('input[name="clareza"]:checked')?.value;
+      var secs = [];
+      document.querySelectorAll('input[name="secoes"]:checked').forEach(function(c){ secs.push(c.value); });
+      respostas['secoes'] = secs.length ? secs.join(', ') : 'Nenhuma marcada';
+    }
+    if (sec === 3) {
+      respostas['motivacao'] = document.querySelector('input[name="motivacao"]:checked')?.value;
+      respostas['indicaria'] = document.querySelector('input[name="indicaria"]:checked')?.value;
+      respostas['destaque'] = document.getElementById('destaque').value || 'Não informado';
+    }
+  }
+
+  function enviar() {
+    coletarRespostas(3);
+    respostas['falta'] = document.getElementById('falta').value || 'Não informado';
+    respostas['comentario'] = document.getElementById('comentario').value || 'Não informado';
+
+    // Esconder seções e mostrar tela final
+    document.getElementById('sec4').classList.remove('ativa');
+    document.getElementById('tela-fim').style.display = 'block';
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressText').textContent = 'Concluído ✓';
+
+    // Montar resumo
+    var itens = [
+      { p: 'Nome', r: respostas['nome'] },
+      { p: 'Faixa etária', r: respostas['faixa'] },
+      { p: 'Contato com TI', r: respostas['contato'] },
+      { p: 'Nota geral', r: respostas['nota'] + ' / 5' },
+      { p: 'Clareza do conteúdo', r: respostas['clareza'] },
+      { p: 'Seções mais úteis', r: respostas['secoes'] },
+      { p: 'Motivação após leitura', r: respostas['motivacao'] },
+      { p: 'Indicaria para outras mulheres?', r: respostas['indicaria'] },
+      { p: 'Informação mais marcante', r: respostas['destaque'] },
+      { p: 'Conteúdo que sentiu falta', r: respostas['falta'] },
+      { p: 'Comentário livre', r: respostas['comentario'] },
+    ];
+
+    var html = '';
+    itens.forEach(function(item) {
+      html += '<div class="resumo-item"><div class="pergunta">' + item.p + '</div><div class="resposta">' + item.r + '</div></div>';
+    });
+    document.getElementById('resumo-conteudo').innerHTML = html;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
