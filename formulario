@@ -395,7 +395,7 @@
       <div id="resumo-conteudo"></div>
     </div>
 
-    <a href="guia_site_html.html"><button class="btn-novo">← Voltar ao guia</button></a>
+    <a href="guia_site"><button class="btn-novo">← Voltar ao guia</button></a>
   </div>
 
 </div>
