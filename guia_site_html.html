@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulheres na TI: O Guia Inicial</title>
+<style>
+  :root {
+    --roxo: #6C3FC5;
+    --roxo-escuro: #4A2990;
+    --roxo-claro: #EDE7FF;
+    --azul: #4B9FE1;
+    --azul-claro: #E3F2FF;
+    --branco: #FFFFFF;
+    --cinza: #F5F3FF;
+    --texto: #2D1B69;
+    --texto-sec: #5C5C7A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--branco); color: var(--texto); line-height: 1.7; }
+
+  /* PONTOS DE FUNDO */
+  .dots-bg {
+    background-image: radial-gradient(circle, #4B9FE1 1.2px, transparent 1.2px);
+    background-size: 28px 28px;
+    background-color: var(--branco);
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--roxo-escuro);
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(74,41,144,0.18);
+  }
+  nav .logo { color: var(--branco); font-weight: 700; font-size: 17px; letter-spacing: .3px; }
+  nav .logo span { color: #C4AAFF; }
+  nav ul { list-style: none; display: flex; gap: 24px; }
+  nav ul a { color: #D6C8FF; font-size: 13px; text-decoration: none; transition: color .2s; }
+  nav ul a:hover { color: var(--branco); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--roxo-escuro) 0%, var(--roxo) 60%, #8B5CF6 100%);
+    color: var(--branco);
+    padding: 80px 32px 90px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(75,159,225,0.18) 1.5px, transparent 1.5px);
+    background-size: 30px 30px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 13px;
+    margin-bottom: 22px;
+    backdrop-filter: blur(4px);
+  }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+  .hero h1 span { color: #C4AAFF; }
+  .hero p { font-size: 17px; opacity: .88; max-width: 560px; margin: 0 auto 32px; }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--branco); color: var(--roxo-escuro);
+    padding: 12px 28px; border-radius: 30px;
+    font-weight: 700; font-size: 14px; text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  .btn-outline {
+    border: 2px solid rgba(255,255,255,0.6); color: var(--branco);
+    padding: 12px 28px; border-radius: 30px;
+    font-weight: 600; font-size: 14px; text-decoration: none;
+    transition: background .2s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+  /* STATS */
+  .stats {
+    background: var(--roxo);
+    padding: 36px 32px;
+    display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  }
+  .stat { text-align: center; color: var(--branco); }
+  .stat .num { font-size: 32px; font-weight: 800; color: #C4AAFF; }
+  .stat .label { font-size: 13px; opacity: .85; margin-top: 2px; }
+
+  /* SEÇÕES GERAIS */
+  section { padding: 72px 32px; max-width: 900px; margin: 0 auto; }
+  .section-title {
+    font-size: 26px; font-weight: 800; color: var(--roxo-escuro);
+    margin-bottom: 8px;
+  }
+  .section-title span { color: var(--azul); }
+  .section-sub { color: var(--texto-sec); font-size: 15px; margin-bottom: 36px; }
+  .divider { width: 48px; height: 4px; background: var(--azul); border-radius: 2px; margin-bottom: 32px; }
+
+  /* CARDS GRADE */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--branco);
+    border: 1px solid #E0D9FF;
+    border-radius: 14px;
+    padding: 24px 20px;
+    transition: transform .2s, box-shadow .2s;
+    position: relative;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(108,63,197,0.12); }
+  .card .icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--roxo-claro);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 14px;
+  }
+  .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--roxo-escuro); }
+  .card p { font-size: 13px; color: var(--texto-sec); line-height: 1.6; }
+  .card .tag {
+    display: inline-block; margin-top: 12px;
+    background: var(--azul-claro); color: var(--azul);
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  }
+
+  /* PASSOS */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step { display: flex; gap: 20px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid #EDE7FF; }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    min-width: 40px; height: 40px; border-radius: 50%;
+    background: var(--roxo); color: var(--branco);
+    font-weight: 800; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step h3 { font-size: 15px; font-weight: 700; color: var(--roxo-escuro); margin-bottom: 4px; }
+  .step p { font-size: 13px; color: var(--texto-sec); }
+
+  /* MITOS */
+  .mitos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .mitos { grid-template-columns: 1fr; } }
+  .mito-card { border-radius: 12px; padding: 18px 16px; }
+  .mito-card.mito { background: #FFF0F0; border-left: 4px solid #E24B4A; }
+  .mito-card.verdade { background: #F0FFF6; border-left: 4px solid #22C55E; }
+  .mito-card .badge { font-size: 11px; font-weight: 700; letter-spacing: .5px; margin-bottom: 8px; }
+  .mito-card.mito .badge { color: #A32D2D; }
+  .mito-card.verdade .badge { color: #166534; }
+  .mito-card p { font-size: 13px; color: var(--texto); line-height: 1.6; }
+
+  /* CURSOS */
+  .cursos { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .curso-card {
+    background: var(--cinza); border-radius: 12px; padding: 18px 16px;
+    border: 1px solid #E0D9FF;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .curso-card .nome { font-weight: 700; font-size: 14px; color: var(--roxo-escuro); }
+  .curso-card .desc { font-size: 12px; color: var(--texto-sec); }
+  .curso-card .link { font-size: 12px; color: var(--azul); font-weight: 600; margin-top: auto; }
+
+  /* COMUNIDADES */
+  .comunidades { display: flex; flex-direction: column; gap: 14px; }
+  .com-card {
+    background: var(--roxo-claro); border-radius: 12px; padding: 16px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .com-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--roxo); flex-shrink: 0; }
+  .com-card h3 { font-size: 14px; font-weight: 700; color: var(--roxo-escuro); margin-bottom: 2px; }
+  .com-card p { font-size: 12px; color: var(--texto-sec); }
+
+  /* MENSAGEM FINAL */
+  .final {
+    background: linear-gradient(135deg, var(--roxo-escuro), var(--roxo));
+    color: var(--branco);
+    text-align: center;
+    padding: 72px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .final::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(75,159,225,0.2) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+  }
+  .final h2 { font-size: 30px; font-weight: 800; margin-bottom: 16px; position: relative; }
+  .final p { font-size: 16px; opacity: .9; max-width: 540px; margin: 0 auto 12px; position: relative; }
+  .final blockquote {
+    font-size: 18px; font-style: italic; color: #C4AAFF;
+    max-width: 500px; margin: 28px auto 0;
+    position: relative;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--roxo-escuro);
+    color: #D6C8FF;
+    text-align: center;
+    padding: 24px 32px;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* SEÇÃO ALTERNADA */
+  .bg-dots-sec { background: var(--cinza); }
+  .bg-dots-sec section { background: transparent; }
+
+  /* ÂNCORAS */
+  .anchor { display: block; position: relative; top: -80px; visibility: hidden; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Mulheres na <span>TI</span> 💜</div>
+  <ul>
+    <li><a href="#carreiras">Carreiras</a></li>
+    <li><a href="#comecar">Por onde começar</a></li>
+    <li><a href="#cursos">Cursos</a></li>
+    <li><a href="#comunidades">Comunidades</a></li>
+    <li><a href="#mitos">Mitos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✦ Guia Digital Gratuito</div>
+  <h1>Mulheres na <span>TI</span><br>O Guia Inicial</h1>
+  <p>Tudo o que você precisa saber para dar o primeiro passo na área de tecnologia — de forma simples, acessível e sem complicação.</p>
+  <div class="hero-btns">
+    <a href="#carreiras" class="btn-primary">Explorar o guia</a>
+    <a href="#comecar" class="btn-outline">Por onde começo?</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="num">800k+</div><div class="label">Vagas de TI abertas por ano no Brasil</div></div>
+  <div class="stat"><div class="num">17%</div><div class="label">Das profissionais de TI são mulheres</div></div>
+  <div class="stat"><div class="num">R$4.500</div><div class="label">Salário médio de entrada na área</div></div>
+  <div class="stat"><div class="num">60%</div><div class="label">Das vagas oferecem trabalho remoto</div></div>
+</div>
+
+<!-- POR QUE ESTE GUIA -->
+<span class="anchor" id="sobre"></span>
+<section>
+  <div class="section-title">Por que este guia <span>existe?</span></div>
+  <div class="divider"></div>
+  <p style="font-size:15px;color:var(--texto-sec);max-width:660px;margin-bottom:16px;">
+    A área de Tecnologia da Informação é uma das que mais cresce no Brasil e no mundo. Salários competitivos, trabalho remoto, vagas em abundância — e mesmo assim, as mulheres ainda representam menos de 20% dos profissionais do setor.
+  </p>
+  <p style="font-size:15px;color:var(--texto-sec);max-width:660px;margin-bottom:16px;">
+    Não é por falta de capacidade. É por falta de informação, de referências e de um primeiro empurrão.
+  </p>
+  <p style="font-size:16px;font-weight:700;color:var(--roxo);">Este guia foi criado para ser esse empurrão. 💜</p>
+</section>
+
+<!-- CARREIRAS -->
+<div class="bg-dots-sec">
+<span class="anchor" id="carreiras"></span>
+<section>
+  <div class="section-title">Quais são as <span>carreiras em TI?</span></div>
+  <p class="section-sub">Tecnologia não é só programação. Veja as principais áreas e encontre a que combina com você.</p>
+  <div class="divider"></div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">💻</div>
+      <h3>Desenvolvimento de Software</h3>
+      <p>Criar aplicativos, sites e sistemas. Linguagens como Python, JavaScript e Java são as mais usadas.</p>
+      <span class="tag">Alta demanda</span>
+    </div>
+    <div class="card">
+      <div class="icon">🔒</div>
+      <h3>Segurança da Informação</h3>
+      <p>Proteger sistemas e dados de ataques e invasões. Área com altíssima demanda e pouquíssimos profissionais.</p>
+      <span class="tag">Poucos profissionais</span>
+    </div>
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>Análise de Dados</h3>
+      <p>Interpretar dados para ajudar empresas a tomarem decisões melhores. Excel, SQL e Python são ferramentas comuns.</p>
+      <span class="tag">Mercado em expansão</span>
+    </div>
+    <div class="card">
+      <div class="icon">🖥️</div>
+      <h3>Suporte de TI</h3>
+      <p>Atender usuários, resolver problemas técnicos e manter sistemas funcionando. Ótima porta de entrada para a área.</p>
+      <span class="tag">Porta de entrada</span>
+    </div>
+    <div class="card">
+      <div class="icon">☁️</div>
+      <h3>Cloud Computing</h3>
+      <p>Gerenciar servidores e serviços na nuvem (AWS, Azure, Google Cloud). Uma das áreas que mais cresce no mundo.</p>
+      <span class="tag">Futuro da TI</span>
+    </div>
+    <div class="card">
+      <div class="icon">🎨</div>
+      <h3>UX/UI Design</h3>
+      <p>Criar interfaces digitais bonitas e fáceis de usar. Une criatividade e tecnologia — perfeito para quem tem perfil visual.</p>
+      <span class="tag">Criatividade + Tech</span>
+    </div>
+    <div class="card">
+      <div class="icon">📋</div>
+      <h3>Gestão de TI</h3>
+      <p>Gerenciar equipes, projetos e processos de tecnologia dentro das empresas. Ideal para quem tem perfil de liderança.</p>
+      <span class="tag">Perfil de liderança</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- POR ONDE COMEÇAR -->
+<span class="anchor" id="comecar"></span>
+<section>
+  <div class="section-title">Por onde <span>começar?</span></div>
+  <p class="section-sub">Você não precisa fazer uma faculdade cara ou um bootcamp de R$ 10.000. Existe um caminho acessível — e começa agora.</p>
+  <div class="divider"></div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <h3>Descubra o que você gosta</h3>
+        <p>Você prefere criar? Analisar? Resolver problemas? Liderar? A resposta te ajuda a escolher a área certa antes de investir tempo e dinheiro.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <h3>Faça um curso gratuito</h3>
+        <p>Existe muito conteúdo de qualidade de graça. Comece por um curso curto para sentir se você gosta antes de se comprometer com algo maior.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <h3>Monte um portfólio simples</h3>
+        <p>Mesmo sendo iniciante, registre o que você aprendeu. Um perfil no LinkedIn bem feito e um repositório no GitHub já contam muito para recrutadores.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div>
+        <h3>Entre em comunidades</h3>
+        <p>Grupos de mulheres em TI são espaços seguros para tirar dúvidas, trocar experiências e encontrar oportunidades de emprego e mentoria.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div>
+        <h3>Candidate-se antes de se sentir pronta</h3>
+        <p>Mulheres se candidatam só quando atendem 100% dos requisitos. Homens se candidatam com 60%. Comece antes — você é mais capaz do que imagina.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURSOS -->
+<div class="bg-dots-sec">
+<span class="anchor" id="cursos"></span>
+<section>
+  <div class="section-title">Cursos <span>gratuitos</span> para começar</div>
+  <p class="section-sub">Você não precisa gastar nada para aprender. Veja plataformas confiáveis e 100% gratuitas.</p>
+  <div class="divider"></div>
+  <div class="cursos">
+    <div class="curso-card">
+      <div class="nome">🟣 Google Ateliê Digital</div>
+      <div class="desc">Cursos de tecnologia, marketing digital e carreira. Certificado reconhecido pelo mercado.</div>
+      <div class="link">learndigital.withgoogle.com</div>
+    </div>
+    <div class="curso-card">
+      <div class="nome">🔵 Microsoft Learn</div>
+      <div class="desc">Cursos de Azure, Power BI, segurança e mais. Certificações oficiais da Microsoft.</div>
+      <div class="link">learn.microsoft.com/pt-br</div>
+    </div>
+    <div class="curso-card">
+      <div class="nome">🟠 Cisco Networking Academy</div>
+      <div class="desc">Redes, segurança e Python. Certificado com reconhecimento internacional.</div>
+      <div class="link">netacad.com</div>
+    </div>
+    <div class="curso-card">
+      <div class="nome">🟢 Coursera</div>
+      <div class="desc">Cursos de universidades internacionais. Muitos disponíveis de graça com opção de certificado.</div>
+      <div class="link">coursera.org</div>
+    </div>
+    <div class="curso-card">
+      <div class="nome">🔴 Curso em Vídeo</div>
+      <div class="desc">Canal do YouTube que ensina programação do zero, em português e totalmente gratuito.</div>
+      <div class="link">youtube.com/@CursoemVideo</div>
+    </div>
+    <div class="curso-card">
+      <div class="nome">⚪ SENAI / SENAC</div>
+      <div class="desc">Cursos presenciais e online de TI, com preços acessíveis e gratuitos para alguns perfis.</div>
+      <div class="link">senai.br / senac.br</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- COMUNIDADES -->
+<span class="anchor" id="comunidades"></span>
+<section>
+  <div class="section-title">Você não precisa <span>caminhar sozinha</span></div>
+  <p class="section-sub">Conecte-se com outras mulheres que estão no mesmo caminho — ou que já chegaram onde você quer chegar.</p>
+  <div class="divider"></div>
+  <div class="comunidades">
+    <div class="com-card">
+      <div class="com-dot" style="background:#9333EA"></div>
+      <div>
+        <h3>PyLadies Brasil</h3>
+        <p>Comunidade para mulheres que programam ou querem aprender Python. Grupos em várias cidades e online. Instagram: @pyladiesbrasil</p>
+      </div>
+    </div>
+    <div class="com-card">
+      <div class="com-dot" style="background:#4B9FE1"></div>
+      <div>
+        <h3>WoMakersCode</h3>
+        <p>Plataforma com cursos, mentorias e comunidade para mulheres em tecnologia. Site: womakerscode.org</p>
+      </div>
+    </div>
+    <div class="com-card">
+      <div class="com-dot" style="background:#22C55E"></div>
+      <div>
+        <h3>She Can Code</h3>
+        <p>Comunidade com eventos, bootcamps e conteúdo voltado para mulheres no desenvolvimento. Instagram: @shecancodeoficial</p>
+      </div>
+    </div>
+    <div class="com-card">
+      <div class="com-dot" style="background:#F59E0B"></div>
+      <div>
+        <h3>Reprograma</h3>
+        <p>ONG que oferece cursos de programação gratuitos para mulheres em situação de vulnerabilidade. Site: reprograma.com.br</p>
+      </div>
+    </div>
+    <div class="com-card">
+      <div class="com-dot" style="background:#EC4899"></div>
+      <div>
+        <h3>LinkedIn — #MulheresEmTI</h3>
+        <p>Siga as hashtags #MulheresEmTI e #WomenInTech e conecte-se com profissionais da área para networking e oportunidades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MITOS E VERDADES -->
+<div class="bg-dots-sec">
+<span class="anchor" id="mitos"></span>
+<section>
+  <div class="section-title">Mitos e <span>verdades</span></div>
+  <p class="section-sub">Desmistificando o que impede muitas mulheres de darem o primeiro passo.</p>
+  <div class="divider"></div>
+  <div class="mitos">
+    <div class="mito-card mito">
+      <div class="badge">❌ MITO</div>
+      <p>"TI é coisa de homem."</p>
+    </div>
+    <div class="mito-card verdade">
+      <div class="badge">✅ VERDADE</div>
+      <p>As primeiras programadoras da história foram mulheres. Ada Lovelace e Grace Hopper definiram os fundamentos da computação moderna.</p>
+    </div>
+    <div class="mito-card mito">
+      <div class="badge">❌ MITO</div>
+      <p>"Preciso ser boa em matemática."</p>
+    </div>
+    <div class="mito-card verdade">
+      <div class="badge">✅ VERDADE</div>
+      <p>Áreas como UX, suporte, gestão de TI e análise não exigem matemática avançada. Lógica e comunicação valem mais.</p>
+    </div>
+    <div class="mito-card mito">
+      <div class="badge">❌ MITO</div>
+      <p>"Já é tarde para começar."</p>
+    </div>
+    <div class="mito-card verdade">
+      <div class="badge">✅ VERDADE</div>
+      <p>Pessoas mudam de carreira para TI aos 30, 40 e 50 anos com sucesso. O mercado valoriza diversidade de experiências.</p>
+    </div>
+    <div class="mito-card mito">
+      <div class="badge">❌ MITO</div>
+      <p>"Preciso de faculdade cara."</p>
+    </div>
+    <div class="mito-card verdade">
+      <div class="badge">✅ VERDADE</div>
+      <p>Certificações, bootcamps e portfólios práticos são aceitos por grandes empresas. TI é um dos mercados mais abertos a autodidatas.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- MENSAGEM FINAL -->
+<div class="final">
+  <h2>O primeiro passo é o mais importante 💜</h2>
+  <p>Você não precisa saber tudo. Não precisa estar pronta. Não precisa ter certeza.</p>
+  <p>A tecnologia precisa de mais mulheres — com perspectivas diferentes e a capacidade de criar soluções que incluam a todos.</p>
+  <p><strong>Esse lugar é seu também.</strong></p>
+  <blockquote>"A tecnologia que vai mudar o mundo precisa ser criada por todo o mundo."</blockquote>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Mulheres na TI: O Guia Inicial</strong></p>
+  <p>Desenvolvido por Pâmela Ferreira da Silva Souza — RU: 5245157</p>
+  <p>Atividade Extensionista II — CST em Gestão da Tecnologia da Informação — UNINTER — 2025</p>
+  <p style="margin-top:8px;opacity:.7;">ODS 04 Educação de Qualidade · ODS 05 Igualdade de Gênero · ODS 08 Trabalho Decente</p>
+  <p style="margin-top:6px;opacity:.6;">Desenvolvido com HTML5 e CSS3 · Material gratuito e de livre compartilhamento</p>
+</footer>
+
+</body>
+</html>
